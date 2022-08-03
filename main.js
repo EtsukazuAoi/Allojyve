@@ -2,10 +2,22 @@ var selected = document.getElementById("main");
 var apikey = "8738dbf792cba5abde36103dd3bc050e";
 var baseurl = "https://api.themoviedb.org/3/";
 var baseimg = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/";
-const module = {};
+
+async function api(url) {
+    let response = await fetch(url);
+    if (response.ok) {
+        let data = await response.json();
+        return data;
+    } else { 
+        console.log("error");
+    }
+}
 
 function topfilm(){
-
+    var list = await api("https://api.themoviedb.org/3/movie/now_playing?api_key="+apikey+"&language=fr&page=1&region=fr");
+    for(var i in list.results){
+        
+    }
 }
 
 function lastfilm(){
@@ -16,39 +28,22 @@ function nextfilm(){
 
 }
 
-var edit = getfilm("579741");
-console.log(edit);
-selected.innerHTML = JSON.stringify(edit);
-
-function getfilm(id){
-    var resulta = {};
-    var preview = null;
+async function getfilm(id){
     var url = baseurl+"movie/"+id+"?language=fr&api_key="+apikey;
     var url2 = baseurl+"movie/"+id+"/videos?language=fr&api_key="+apikey;
-    // ---- get trailer list ---- //
-    fetch(url2).then((resp2) => resp2.json()).then(function(data2) {
-        if(!data2){
-           alert("data empty") ;
-        }
-        for(var i in data2.results) {
-                preview = "https://www.youtube.com/watch?v="+data2.results[i].key
-                console.log(preview)
-                //break;
-        }
-    });
-    // ---- get movie ---- //
-    fetch(url).then((resp) => resp.json()).then(function(data) {
-        resulta = {
-            "lang_title":data.title,
-            "original_title":data.original_title,
-            "date":data.release_date,
-            "img":"",
-            "vote":data.vote_average,
-            "overview":data.overview,
-            "trailer":preview
-        };
-    });
-    if(resulta.lang_title){
-        return resulta;
-    }
+
+    var filminfo = await api(url);
+    var trailer = await api(url2);
+    console.log(filminfo);
+    console.log(trailer);
+    resulta = {
+        "lang_title":filminfo.title,
+        "original_title":filminfo.original_title,
+        "date":filminfo.release_date,
+        "img":"",
+        "vote":filminfo.vote_average,
+        "overview":filminfo.overview,
+        "trailer":"https://www.youtube.com/watch?v="+trailer.results[0].key
+    };
+    return resulta;
 }
