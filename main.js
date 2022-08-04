@@ -3,7 +3,14 @@ var apikey = "8738dbf792cba5abde36103dd3bc050e";
 var baseurl = "https://api.themoviedb.org/3/";
 var baseimg = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/";
 var regex = /[^a-z\_\-\:,.& 0-9]/gi;
-var savelocal = {};
+var filmlist = {};
+var filmsave = JSON.parse(localStorage.getItem("filmsave") || "{}");
+var newfilm = 0;
+function datetofr(dates){
+    var d = dates.split("-");
+    return d[2]+"/"+d[1]+"/"+d[0];
+}
+
 async function api(url) {
     let response = await fetch(url);
     if (response.ok) {
@@ -20,8 +27,8 @@ async function topfilm(){
     for(var i in list.results){
         var filminfo = list.results[i];
         html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
-        if(!savelocal[filminfo.id]){
-            savelocal[filminfo.id] = {
+        if(!filmlist[filminfo.id]){
+            filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
                 "original_title":filminfo.original_title,
                 "date":filminfo.release_date,
@@ -32,9 +39,22 @@ async function topfilm(){
             };
             getTrailer(filminfo.id);
         }
+        if(!filmsave[filminfo.id]){
+            filmsave[filminfo.id] = true;
+            if(filmsave != {}){
+                newfilm++;
+            }
+        }
     }
     html += "</div></div>";
+    localStorage.setItem("filmsave",JSON.stringify(filmsave));
     main.innerHTML += html;
+    // if(newfilm > 0 && newfilm < 50){
+    //     var modal = document.getElementById("myModal");
+    //     modal.children[0].children[0].children[1].innerHTML = "Il y eu "+newfilm+" nouveaux films depuis votre dernière visite";
+    //     modal.children[0].children[1].innerHTML = "";
+    //     modal.style.display = "block";
+    // }
 }
 
 async function lastfilm(){
@@ -43,8 +63,8 @@ async function lastfilm(){
     for(var i in list.results){
         var filminfo = list.results[i];
         html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
-        if(!savelocal[filminfo.id]){
-            savelocal[filminfo.id] = {
+        if(!filmlist[filminfo.id]){
+            filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
                 "original_title":filminfo.original_title,
                 "date":filminfo.release_date,
@@ -55,9 +75,22 @@ async function lastfilm(){
             };
             getTrailer(filminfo.id);
         }
+        if(!filmsave[filminfo.id]){
+            filmsave[filminfo.id] = true;
+            if(filmsave != {}){
+                newfilm++;
+            }
+        }
     }
     html += "</div></div>";
+    localStorage.setItem("filmsave",JSON.stringify(filmsave));
     main.innerHTML += html;
+    // if(newfilm > 0 && newfilm < 50){
+    //     var modal = document.getElementById("myModal");
+    //     modal.children[0].children[0].children[1].innerHTML = "Il y eu "+newfilm+" nouveaux films depuis votre dernière visite";
+    //     modal.children[0].children[1].innerHTML = "";
+    //     modal.style.display = "block";
+    // }
 }
 
 async function nextfilm(){
@@ -66,8 +99,8 @@ async function nextfilm(){
     for(var i in list.results){
         var filminfo = list.results[i];
         html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
-        if(!savelocal[filminfo.id]){
-            savelocal[filminfo.id] = {
+        if(!filmlist[filminfo.id]){
+            filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
                 "original_title":filminfo.original_title,
                 "date":filminfo.release_date,
@@ -78,29 +111,47 @@ async function nextfilm(){
             };
             getTrailer(filminfo.id);
         }
+        if(!filmsave[filminfo.id]){
+            filmsave[filminfo.id] = true;
+            if(filmsave != {}){
+                newfilm++;
+            }
+        }
     }
     html += "</div></div>";
+    localStorage.setItem("filmsave",JSON.stringify(filmsave));
     main.innerHTML += html;
+    if(newfilm > 0 && newfilm < 50){
+        var modal = document.getElementById("myModal");
+        modal.children[0].children[0].children[1].innerHTML = "Il y eu "+newfilm+" nouveaux films depuis votre dernière visite";
+        modal.children[0].children[1].innerHTML = "";
+        modal.style.display = "block";
+    }
 }
 
 async function getTrailer(id){
     var url = baseurl+"movie/"+id+"/videos?language=fr&api_key="+apikey;
     var results = await api(url);
     if(results.results[0]){
-        savelocal[id].trailer = results.results[0].key;
+        filmlist[id].trailer = results.results[0].key;
     }
     
 }
 
 function SelectPoster(id){
-    var info = savelocal[id];
+    var info = filmlist[id];
     var modal = document.getElementById("myModal");
     modal.children[0].children[0].children[1].innerHTML = info.original_title;
     modal.children[0].children[0].children[2].innerHTML = "";
     if(info.original_title.search(regex) != -1){
         modal.children[0].children[0].children[2].innerHTML = info.lang_title;
     }
-    modal.children[0].children[1].innerHTML = "<div><img src='"+baseimg+info.img+"' /></div><div><p>Description:<br>"+info.descrition+"</p><p>Date de sortie:</br>"+info.date+"</p><p>note:</br>"+info.vote+"/10</p></div>";
+    var modalbody = "<div><img src='"+baseimg+info.img+"' /></div><div><p>Description:<br>"+info.descrition+"</p><p>Date de sortie:</br>"+datetofr(info.date)+"</p><p>note:</br>"+info.vote+"/10</p>";
+    if(info.trailer != null){
+        modalbody += '<iframe src="https://www.youtube.com/embed/'+info.trailer+'" allowfullscreen></iframe>';
+    }
+    modalbody += "</div>";
+    modal.children[0].children[1].innerHTML = modalbody;
     modal.style.display = "block";
 }
 
@@ -111,14 +162,18 @@ lastfilm();
 topfilm();
 nextfilm();
 
+//console.log(window.devicePixelRatio);
 window.onclick = function(event) {
     if(event.target.className == "close"){
         document.getElementById("myModal").style.display = "none";
+        document.getElementById("myModal").children[0].children[1].innerHTML = "";
     }else if(event.target.parentElement){
         var parent = event.target.parentElement.classList;
         if(parent[0] == "poster"){
             var select = parent[1].split("_")[1];
             SelectPoster(select);
         }
+    }else{
+        console.log(event.target);
     }
 }

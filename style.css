@@ -7,6 +7,7 @@
 }
 h2 {
     padding: 10px;
+    margin: 0px;
     color: black;
     text-decoration: underline black;
 }
@@ -20,9 +21,10 @@ h2::first-letter,h4::first-letter {
     clear: both;
 }
 .list {
-    width: 100vw;
+    width: 97vw;
     height: auto;
     display: flex;
+    flex-direction: row;
     overflow-x: scroll;
 }
 .poster {
@@ -38,69 +40,61 @@ h2::first-letter,h4::first-letter {
     width: 100%;
 }
 
-
-/* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none; 
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
+  width: 100%;
+  height: 100%;
+  max-height: 100vh; 
+  overflow: auto;
   text-align: center;
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  -webkit-animation-name: fadeIn; /* Fade in the background */
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4);
+  /* -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 0.4s;
   animation-name: fadeIn;
-  animation-duration: 0.4s
+  animation-duration: 0.4s */
 }
-
-/* Modal Content */
 .modal-content {
   position: fixed;
   bottom: 0;
   background-color: #fefefe;
   width: 100%;
+  max-height: 100vh;
   -webkit-animation-name: slideIn;
   -webkit-animation-duration: 0.4s;
   animation-name: slideIn;
   animation-duration: 0.4s
 }
-@media (max-width: 750px) {
-    
-}
-/* The Close Button */
 .close {
   color: white;
   float: right;
   font-size: 28px;
   font-weight: bold;
+  padding: 10px 18px;
+  background-color: #f44336;
 }
-
-.close:hover,
-.close:focus {
+.close:hover,.close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
 }
-
 .modal-header {
   padding: 2px 16px;
   background-color: rgb(231, 200, 0);
   color: white;
 }
-
 .modal-body {
     padding: 2px 16px;
     display: flex;
     flex-direction : row;
 }
-
 .modal-body div p {
     padding: 10px;
+    margin: 0px;
 }
 
 /* Add Animation */
@@ -122,4 +116,32 @@ h2::first-letter,h4::first-letter {
 @keyframes fadeIn {
     from {opacity: 0} 
     to {opacity: 1}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2)
+/* @media (max-width: 750px) */{ 
+    .poster {
+        min-width: 50vw;
+    }
+    .poster h4 {
+        font-size: 14px;
+        padding-bottom: 16px;
+    }
+    .modal-body {
+        flex-direction:column!important;
+        font-size: small;
+    }
+    .modal-content {
+        position: unset;
+        max-height: 150vh;
+    }
+}
+
+iframe:hover {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 75vw;
+    min-height: 75vh;
 }
