@@ -1,0 +1,16 @@
+#navbar {
+    width: 100%;
+    background-color: rgb(158, 158, 158);
+}
+#navbar img {
+    height: 8vw;
+}
+h2 {
+    padding: 10px;
+    color: black;
+    text-decoration: underline black;
+}
+h2::first-letter {
+    color: #fbdd00;
+    font-size: 120%;
+}
