@@ -26,8 +26,8 @@ async function topfilm(){
     var list = await api("https://api.themoviedb.org/3/movie/popular?api_key="+apikey+"&language=fr&page=1&region=fr");
     for(var i in list.results){
         var filminfo = list.results[i];
-        html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
         if(!filmlist[filminfo.id]){
+            html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
             filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
                 "original_title":filminfo.original_title,
@@ -128,12 +128,15 @@ async function nextfilm(){
         modal.style.display = "block";
     }
 }
-
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 async function getTrailer(id){
     var url = baseurl+"movie/"+id+"/videos?language=fr&api_key="+apikey;
     var results = await api(url);
     if(results.results[0]){
-        filmlist[id].trailer = results.results[0].key;
+        var random = getRandomInt(results.results.length);
+        filmlist[id].trailer = results.results[random].key;
     }
     
 }
