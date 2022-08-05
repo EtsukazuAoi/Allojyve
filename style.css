@@ -1,3 +1,15 @@
+body {
+    background-color: black;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+}
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+#main {
+    background-color: white;
+}
 #navbar {
     width: 100%;
     background-color: rgb(158, 158, 158);
@@ -53,10 +65,10 @@ h2::first-letter,h4::first-letter {
   text-align: center;
   background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0,0.4);
-  /* -webkit-animation-name: fadeIn;
+  -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 0.4s;
   animation-name: fadeIn;
-  animation-duration: 0.4s */
+  animation-duration: 0.4s
 }
 .modal-content {
   position: fixed;
@@ -65,9 +77,9 @@ h2::first-letter,h4::first-letter {
   width: 100%;
   max-height: 100vh;
   -webkit-animation-name: slideIn;
-  -webkit-animation-duration: 0.4s;
+  -webkit-animation-duration: 1s;
   animation-name: slideIn;
-  animation-duration: 0.4s
+  animation-duration: 1s
 }
 .close {
   color: white;
@@ -96,6 +108,17 @@ h2::first-letter,h4::first-letter {
     padding: 10px;
     margin: 0px;
 }
+iframe {
+    transition: width 2s, height 2s, transform 2s;
+}
+iframe:hover {
+    position: fixed;
+    width: 75vw;
+    height: 75vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 /* Add Animation */
 @-webkit-keyframes slideIn {
@@ -118,6 +141,7 @@ h2::first-letter,h4::first-letter {
     to {opacity: 1}
 }
 
+
 @media screen and (-webkit-min-device-pixel-ratio: 2)
 /* @media (max-width: 750px) */{ 
     .poster {
@@ -135,13 +159,4 @@ h2::first-letter,h4::first-letter {
         position: unset;
         max-height: 150vh;
     }
-}
-
-iframe:hover {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 75vw;
-    min-height: 75vh;
 }
