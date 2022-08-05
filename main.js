@@ -105,7 +105,7 @@ async function nextfilm(){
                 "original_title":filminfo.original_title,
                 "date":filminfo.release_date,
                 "img":filminfo.poster_path,
-                "vote":null,
+                "vote":filminfo.vote_average,
                 "descrition":filminfo.overview,
                 "trailer":null
             };
@@ -149,10 +149,7 @@ function SelectPoster(id){
     if(info.original_title.search(regex) != -1){
         modal.children[0].children[0].children[2].innerHTML = info.lang_title;
     }
-    var modalbody = "<div><img src='"+baseimg+info.img+"' /></div><div><p>Description:<br>"+info.descrition+"</p><p>Date de sortie:</br>"+datetofr(info.date)+"</p>";
-    if(info.vote != null){
-        modalbody += "<p>note:</br>"+info.vote+"/10</p>";
-    }
+    var modalbody = "<div><img src='"+baseimg+info.img+"' /></div><div><p>Description:<br>"+info.descrition+"</p><p>Date de sortie:</br>"+datetofr(info.date)+"</p><p>note:</br>"+info.vote+"/10</p>";
     if(info.trailer != null){
         modalbody += '<iframe src="https://www.youtube.com/embed/'+info.trailer+'" allowfullscreen></iframe>';
     }
