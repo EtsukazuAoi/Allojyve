@@ -168,7 +168,7 @@ function SelectPoster(id){
     modal.style.display = "block";
 }
 
-var base = "<div id=\"navbar\"><img src=\"./charte graphique/allojyvé_logo.png\" alt=\"logo allojyvé\"></div>";
+var base = "<div id=\"navbar\"><img src=\"./charte_graphique/allojyvé_logo.png\" alt=\"logo allojyvé\"></div>";
 base += '<div id="myModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="close">&times;</span><h3></h3><h5></h5></div><div class="modal-body"></div></div></div>';
 main.innerHTML = base;
 lastfilm();
