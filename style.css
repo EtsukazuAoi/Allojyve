@@ -55,7 +55,7 @@ h2::first-letter,h4::first-letter {
 .modal {
   display: none; 
   position: fixed;
-  z-index: 1;
+  z-index: 10;
   left: 0;
   top: 0;
   width: 100%;
