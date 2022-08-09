@@ -122,6 +122,34 @@ iframe:hover {
     transform: translate(-50%, -50%);
 }
 
+.ribbon {
+    display: inline;
+    position: relative;
+    left: -2%; top: 4%;
+    z-index: 1;
+    overflow: hidden;
+    width: 75px; height: 75px;
+    text-align: right;
+}
+.ribbon span {
+    background-color: red;
+    width: 50px;
+    line-height: 20px;
+    display: block;
+    text-align: center;
+    color: white;
+    position: absolute;
+}
+.ribbon span::after {
+    content: "";
+    position: absolute; left: 50px;/* top: 100%;*/
+    z-index: -1;
+    border-left: 8px solid red;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid red;
+    border-top: 10px solid transparent;
+}
+
 /* Add Animation */
 @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 

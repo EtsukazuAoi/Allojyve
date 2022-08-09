@@ -4,7 +4,11 @@ var baseurl = "https://api.themoviedb.org/3/";
 var baseimg = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/";
 var regex = /[^a-z\_\-\:,.&'" 0-9]/gi;
 var filmlist = {};
+var firststart = false;
 var filmsave = JSON.parse(localStorage.getItem("filmsave") || "{}");
+if(filmsave.length > 0) {
+    firststart = true;
+}
 var newfilm = 0;
 function datetofr(dates){
     var d = dates.split("-");
@@ -27,7 +31,11 @@ async function topfilm(){
     for(var i in list.results){
         var filminfo = list.results[i];
         if(!filmlist[filminfo.id]){
-            html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
+            html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4>";
+            if(!filmsave[filminfo.id] && firststart == false){
+                html += '<div class="ribbon"><span>news</span></div>';
+            }
+            html += "<img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
             filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
                 "original_title":filminfo.original_title,
@@ -41,7 +49,7 @@ async function topfilm(){
         }
         if(!filmsave[filminfo.id]){
             filmsave[filminfo.id] = true;
-            if(filmsave != {}){
+            if(firststart == false ){
                 newfilm++;
             }
         }
@@ -49,12 +57,6 @@ async function topfilm(){
     html += "</div></div>";
     localStorage.setItem("filmsave",JSON.stringify(filmsave));
     main.innerHTML += html;
-    // if(newfilm > 0 && newfilm < 50){
-    //     var modal = document.getElementById("myModal");
-    //     modal.children[0].children[0].children[1].innerHTML = "Il y eu "+newfilm+" nouveaux films depuis votre dernière visite";
-    //     modal.children[0].children[1].innerHTML = "";
-    //     modal.style.display = "block";
-    // }
 }
 
 async function lastfilm(){
@@ -62,7 +64,11 @@ async function lastfilm(){
     var list = await api("https://api.themoviedb.org/3/movie/now_playing?api_key="+apikey+"&language=fr&page=1&region=fr");
     for(var i in list.results){
         var filminfo = list.results[i];
-        html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
+        html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4>";
+        if(!filmsave[filminfo.id] && firststart == false){
+            html += '<div class="ribbon"><span>news</span></div>';
+        }
+        html += "<img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
         if(!filmlist[filminfo.id]){
             filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
@@ -77,7 +83,7 @@ async function lastfilm(){
         }
         if(!filmsave[filminfo.id]){
             filmsave[filminfo.id] = true;
-            if(filmsave != {}){
+            if(firststart == false){
                 newfilm++;
             }
         }
@@ -98,7 +104,11 @@ async function nextfilm(){
     var list = await api("https://api.themoviedb.org/3/movie/upcoming?api_key="+apikey+"&language=fr&page=1&region=fr");
     for(var i in list.results){
         var filminfo = list.results[i];
-        html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4><img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
+        html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4>";
+        if(!filmsave[filminfo.id] && firststart == false){
+            html += '<div class="ribbon"><span>news</span></div>';
+        }
+        html += "<img src='"+baseimg+filminfo.poster_path+"' alt='"+filminfo.original_title+"' /></div>";
         if(!filmlist[filminfo.id]){
             filmlist[filminfo.id] = {
                 "lang_title":filminfo.title,
@@ -113,7 +123,7 @@ async function nextfilm(){
         }
         if(!filmsave[filminfo.id]){
             filmsave[filminfo.id] = true;
-            if(filmsave != {}){
+            if(firststart == false){
                 newfilm++;
             }
         }
