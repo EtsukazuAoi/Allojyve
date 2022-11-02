@@ -28,6 +28,11 @@ async function api(url) {
 async function topfilm(){
     var html = "<div class='cat'><h2>Les films les plus populaires :</h2><div class=\"list\">";
     var list = await api("https://api.themoviedb.org/3/movie/popular?api_key="+apikey+"&language=fr&page=1&region=fr");
+    var list2 = await api("https://api.themoviedb.org/3/movie/popular?api_key="+apikey+"&language=fr&page=2&region=fr")
+    for(var i in list2.results){
+        list.results[Math.floor(i)+20] = list2.results[i];
+    }
+    // list.results.concat(list2.results);
     for(var i in list.results){
         var filminfo = list.results[i];
         if(!filmlist[filminfo.id]){
@@ -62,6 +67,10 @@ async function topfilm(){
 async function lastfilm(){
     var html = "<div class='cat'><h2>Les derniers films sortis :</h2><div class=\"list\">";
     var list = await api("https://api.themoviedb.org/3/movie/now_playing?api_key="+apikey+"&language=fr&page=1&region=fr");
+    var list2 = await api("https://api.themoviedb.org/3/movie/now_playing?api_key="+apikey+"&language=fr&page=2&region=fr")
+    for(var i in list2.results){
+        list.results[Math.floor(i)+20] = list2.results[i];
+    }
     for(var i in list.results){
         var filminfo = list.results[i];
         html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4>";
@@ -102,6 +111,10 @@ async function lastfilm(){
 async function nextfilm(){
     var html = "<div class='cat'><h2>Les films à venir :</h2><div class=\"list\">";
     var list = await api("https://api.themoviedb.org/3/movie/upcoming?api_key="+apikey+"&language=fr&page=1&region=fr");
+    var list2 = await api("https://api.themoviedb.org/3/movie/upcoming?api_key="+apikey+"&language=fr&page=2&region=fr")
+    for(var i in list2.results){
+        list.results[Math.floor(i)+20] = list2.results[i];
+    }
     for(var i in list.results){
         var filminfo = list.results[i];
         html += "<div class='poster p_"+filminfo.id+"'><h4>"+filminfo.original_title+"</h4>";
